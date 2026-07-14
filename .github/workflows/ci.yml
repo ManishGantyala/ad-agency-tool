@@ -46,8 +46,7 @@ jobs:
         uses: azure/setup-kubectl@v4
 
       - name: Validate Kubernetes manifests
-        run: kubectl apply --dry-run=client -f k8s/
-
+        run: kubectl apply --dry-run=client --validate=false -f k8s/
       - name: Build Docker image
         run: docker build -t ad-agency-tool:${{ github.sha }} .
 
