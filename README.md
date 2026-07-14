@@ -228,3 +228,10 @@ the source commit.
 ├── .oxlintrc.json           Oxlint configuration
 └── package.json             Scripts and dependencies
 ```
+
+## Author
+
+**Manish Gantyala**  
+**DevOps Engineer**
+
+This project was developed and implemented as a hands-on DevOps project, covering application containerization, Kubernetes deployment, CI automation, container security scanning, and image publishing to GitHub Container Registry.
