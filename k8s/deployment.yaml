@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad-agency-tool
+  namespace: ad-agency
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ad-agency-tool
+  template:
+    metadata:
+      labels:
+        app: ad-agency-tool
+    spec:
+      containers:
+        - name: ad-agency-tool
+          image: ad-agency-tool:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20

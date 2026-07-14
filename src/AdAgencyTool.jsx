@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  Trash2, Plus, X, MessageSquare, Clock, Flag, CheckCircle2, Circle, 
+import {
+  Trash2, Plus, X, MessageSquare, Clock, Flag, CheckCircle2, Circle,
   Grid3x3, List, Calendar, Search, Filter, Edit2, Copy, Archive,
   Image as ImageIcon, Users, Settings, Paperclip, Link2, Share2,
   Eye, EyeOff, ArrowRight, AlignLeft, Tag, Bell, MoreVertical,
@@ -27,25 +27,25 @@ export default function AdAgencyTool() {
 
   // Teams State
   const [teams, setTeams] = useState([
-    { 
-      id: 1, 
-      name: 'Rajesh Kumar', 
+    {
+      id: 1,
+      name: 'Rajesh Kumar',
       role: 'Lead Designer',
       avatar: '👨‍🎨',
       email: 'rajesh@agency.com',
       assignedTasks: 4
     },
-    { 
-      id: 2, 
-      name: 'Uttam Patel', 
+    {
+      id: 2,
+      name: 'Uttam Patel',
       role: 'Video Producer',
       avatar: '🎬',
       email: 'uttam@agency.com',
       assignedTasks: 3
     },
-    { 
-      id: 3, 
-      name: 'Pandu Singh', 
+    {
+      id: 3,
+      name: 'Pandu Singh',
       role: 'Strategist',
       avatar: '🧠',
       email: 'pandu@agency.com',
@@ -61,7 +61,7 @@ export default function AdAgencyTool() {
     { id: 2, name: 'Samaya', icon: '✨', color: 'from-purple-500 to-pink-500' },
     { id: 3, name: 'Dorpo', icon: '🚀', color: 'from-orange-500 to-red-500' },
   ]);
-  
+
 
   // Columns State
   const [columns, setColumns] = useState([
@@ -74,11 +74,11 @@ export default function AdAgencyTool() {
 
   // Cards State
   const [cards, setCards] = useState([
-    { 
-      id: 1, 
+    {
+      id: 1,
       clientId: 1,
-      columnId: 'todo', 
-      title: 'Logo Redesign', 
+      columnId: 'todo',
+      title: 'Logo Redesign',
       description: 'Create modern logo variations with minimalist approach',
       imageUrl: '🎨',
       priority: 'high',
@@ -92,11 +92,11 @@ export default function AdAgencyTool() {
         { user: 'Rajesh', action: 'created this card', time: '2 hours ago' }
       ]
     },
-    { 
-      id: 2, 
+    {
+      id: 2,
       clientId: 1,
-      columnId: 'designing', 
-      title: 'Instagram Reel - Product Launch', 
+      columnId: 'designing',
+      title: 'Instagram Reel - Product Launch',
       description: 'Create 30-60 second reel showcasing new product features with transitions',
       imageUrl: '🎬',
       priority: 'high',
@@ -111,11 +111,11 @@ export default function AdAgencyTool() {
         { user: 'Rajesh', action: 'commented', time: '3 hours ago' }
       ]
     },
-    { 
-      id: 3, 
+    {
+      id: 3,
       clientId: 1,
-      columnId: 'review', 
-      title: 'Email Campaign Graphics', 
+      columnId: 'review',
+      title: 'Email Campaign Graphics',
       description: 'Design header and footer graphics for email series',
       imageUrl: '📧',
       priority: 'medium',
@@ -127,11 +127,11 @@ export default function AdAgencyTool() {
       labels: ['email', 'design'],
       activity: []
     },
-    { 
-      id: 4, 
+    {
+      id: 4,
       clientId: 1,
-      columnId: 'done', 
-      title: 'Website Banner Animation', 
+      columnId: 'done',
+      title: 'Website Banner Animation',
       description: 'Build interactive CSS animation for hero section',
       imageUrl: '✨',
       priority: 'medium',
@@ -143,11 +143,11 @@ export default function AdAgencyTool() {
       labels: ['web', 'animation'],
       activity: []
     },
-    { 
-      id: 5, 
+    {
+      id: 5,
       clientId: 1,
-      columnId: 'todo', 
-      title: 'Social Media Kit', 
+      columnId: 'todo',
+      title: 'Social Media Kit',
       description: 'Complete brand guidelines for social platforms',
       imageUrl: '📱',
       priority: 'low',
@@ -159,11 +159,11 @@ export default function AdAgencyTool() {
       labels: ['branding', 'social'],
       activity: []
     },
-    { 
-      id: 6, 
+    {
+      id: 6,
       clientId: 2,
-      columnId: 'backlog', 
-      title: 'Website Redesign Proposal', 
+      columnId: 'backlog',
+      title: 'Website Redesign Proposal',
       description: 'Pitch new design direction to client',
       imageUrl: '🌐',
       priority: 'high',
@@ -204,7 +204,7 @@ export default function AdAgencyTool() {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     if (date.toDateString() === today.toDateString()) return 'Today';
     if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -216,7 +216,7 @@ export default function AdAgencyTool() {
 
   const handleDrop = (columnId) => {
     if (draggedCard && draggedCard.columnId !== columnId) {
-      setCards(cards.map(c => 
+      setCards(cards.map(c =>
         c.id === draggedCard.id ? { ...c, columnId } : c
       ));
     }
@@ -323,7 +323,7 @@ export default function AdAgencyTool() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Ad Agency Tool
+                Ad Agency Tool v2
               </h1>
               <p className="text-purple-300/70 text-sm mt-1">Client and team work management</p>
             </div>
@@ -332,11 +332,10 @@ export default function AdAgencyTool() {
                 <button
                   key={v}
                   onClick={() => setView(v)}
-                  className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${
-                    view === v
-                      ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/50'
-                      : 'text-purple-300 hover:bg-purple-900/50'
-                  }`}
+                  className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${view === v
+                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/50'
+                    : 'text-purple-300 hover:bg-purple-900/50'
+                    }`}
                 >
                   {v === 'clients' ? <Grid3x3 size={20} /> : <Users size={20} />}
                   <span className="capitalize">{v}</span>
@@ -440,7 +439,7 @@ export default function AdAgencyTool() {
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-white mb-4">Team Management</h2>
-              
+
               {/* Add Team Member Form */}
               <div className="bg-slate-800/50 border border-purple-500/20 rounded-xl p-6 mb-6">
                 <h3 className="text-lg font-bold text-white mb-4">Add Team Member</h3>

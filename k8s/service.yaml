@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ad-agency-tool
+  namespace: ad-agency
+spec:
+  selector:
+    app: ad-agency-tool
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
