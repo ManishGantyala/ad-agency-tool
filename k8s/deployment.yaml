@@ -3,28 +3,49 @@ kind: Deployment
 metadata:
   name: ad-agency-tool
   namespace: ad-agency
+
 spec:
   replicas: 3
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
   selector:
     matchLabels:
       app: ad-agency-tool
+
   template:
     metadata:
       labels:
         app: ad-agency-tool
+
     spec:
       containers:
         - name: ad-agency-tool
-          image: ad-agency-tool:v2
+          image: ghcr.io/manishgantyala/ad-agency-tool:b07432ef798164615906b1ed4f839a17a19cf63e
           imagePullPolicy: IfNotPresent
+
           ports:
             - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+
           readinessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
+
           livenessProbe:
             httpGet:
               path: /
