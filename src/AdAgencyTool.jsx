@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Trash2, Plus, X, MessageSquare, Clock, Flag, CheckCircle2, Circle,
-  Grid3x3, List, Calendar, Search, Filter, Edit2, Copy, Archive,
-  Image as ImageIcon, Users, Settings, Paperclip, Link2, Share2,
-  Eye, EyeOff, ArrowRight, AlignLeft, Tag, Bell, MoreVertical,
-  Save, ChevronDown, Type, Palette
+  Trash2, Plus, X, MessageSquare, Paperclip, Clock, Search, Users,
+  Grid3x3, Copy, Archive, Edit2, Type, ImageIcon, AlignLeft, Tag, Save
 } from 'lucide-react';
 
 export default function AdAgencyTool() {
   const [view, setView] = useState('clients'); // clients, team
   const [editingCardId, setEditingCardId] = useState(null);
-  const [showNewCardForm, setShowNewCardForm] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPriority, setFilterPriority] = useState('all');
   const [newWorkClientId, setNewWorkClientId] = useState(null);
@@ -56,21 +52,12 @@ export default function AdAgencyTool() {
   const [newTeamMember, setNewTeamMember] = useState({ name: '', role: '', avatar: '' });
 
   // Clients State
-  const [clients, setClients] = useState([
+  const [clients] = useState([
     { id: 1, name: 'Japasya', icon: '🎯', color: 'from-blue-500 to-cyan-500' },
     { id: 2, name: 'Samaya', icon: '✨', color: 'from-purple-500 to-pink-500' },
     { id: 3, name: 'Dorpo', icon: '🚀', color: 'from-orange-500 to-red-500' },
   ]);
 
-
-  // Columns State
-  const [columns, setColumns] = useState([
-    { id: 'backlog', title: 'Backlog', color: 'from-gray-400 to-gray-500' },
-    { id: 'todo', title: 'To Do', color: 'from-blue-400 to-blue-500' },
-    { id: 'designing', title: 'Designing', color: 'from-purple-400 to-purple-500' },
-    { id: 'review', title: 'Review', color: 'from-yellow-400 to-yellow-500' },
-    { id: 'done', title: 'Done', color: 'from-green-400 to-green-500' },
-  ]);
 
   // Cards State
   const [cards, setCards] = useState([
@@ -178,7 +165,6 @@ export default function AdAgencyTool() {
   ]);
 
   const [selectedCard, setSelectedCard] = useState(null);
-  const [draggedCard, setDraggedCard] = useState(null);
 
   const filteredCards = cards.filter(card => {
     const matchesSearch = card.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -210,22 +196,6 @@ export default function AdAgencyTool() {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  const handleDragStart = (card) => {
-    setDraggedCard(card);
-  };
-
-  const handleDrop = (columnId) => {
-    if (draggedCard && draggedCard.columnId !== columnId) {
-      setCards(cards.map(c =>
-        c.id === draggedCard.id ? { ...c, columnId } : c
-      ));
-    }
-    setDraggedCard(null);
-  };
-
-  const getCardsByColumn = (columnId) => {
-    return filteredCards.filter(c => c.columnId === columnId);
-  };
 
   const updateCard = (cardId, updates) => {
     setCards(cards.map(c => c.id === cardId ? { ...c, ...updates } : c));
@@ -306,14 +276,6 @@ export default function AdAgencyTool() {
     closeNewWorkForm();
   };
 
-  const daysUntilDue = (dueDate) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const due = new Date(dueDate);
-    due.setHours(0, 0, 0, 0);
-    const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-    return diff;
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900 to-slate-950">
