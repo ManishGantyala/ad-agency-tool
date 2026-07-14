@@ -42,11 +42,12 @@ jobs:
 
       - name: Build application
         run: npm run build
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+      - name: Set up Kubeconform
+        uses: bmuschko/setup-kubeconform@v1
 
       - name: Validate Kubernetes manifests
-        run: kubectl apply --dry-run=client --validate=false -f k8s/
+        run: kubeconform -strict -summary k8s/
+
       - name: Build Docker image
         run: docker build -t ad-agency-tool:${{ github.sha }} .
 
