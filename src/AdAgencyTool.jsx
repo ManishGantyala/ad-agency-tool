@@ -285,7 +285,7 @@ export default function AdAgencyTool() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Ad Agency Tool v2
+                Ad Agency Tool v3
               </h1>
               <p className="text-purple-300/70 text-sm mt-1">Client and team work management</p>
             </div>
