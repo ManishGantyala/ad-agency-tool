@@ -14,7 +14,8 @@ export const getCampaign = async (id: number) => {
 
 export const createCampaign = async (
   name: string,
-  budget: number
+  budget: number,
+  clientId: number
 ) => {
   if (!name || name.trim() === "") {
     throw new Error("Campaign name is required");
@@ -28,6 +29,7 @@ export const createCampaign = async (
     data: {
       name,
       budget,
+      clientId,
     },
   });
 };

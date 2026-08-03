@@ -38,11 +38,12 @@ export const createCampaignHandler = async (
   res: Response
 ) => {
   try {
-    const { name, budget } = req.body;
+    const { name, budget, clientId } = req.body;
 
     const campaign = await createCampaignService(
       name,
-      budget
+      budget,
+      clientId
     );
 
     res.status(201).json(campaign);

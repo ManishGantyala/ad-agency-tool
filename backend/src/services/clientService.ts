@@ -9,6 +9,9 @@ export const getClient = async (id: number) => {
     where: {
       id,
     },
+    include: {
+      campaigns: true,
+    },
   });
 };
 
