@@ -1,3 +1,5 @@
+
+import Header from "./components/layout/Header";
 import React, { useState } from 'react';
 import {
   Trash2, Plus, X, MessageSquare, Paperclip, Clock, Search, Users,
@@ -6,7 +8,7 @@ import {
 
 export default function AdAgencyTool() {
   const [view, setView] = useState('clients'); // clients, team
-  const [editingCardId, setEditingCardId] = useState(null);
+  const [editingCampaignId, setEditingCampaignId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPriority, setFilterPriority] = useState('all');
   const [newWorkClientId, setNewWorkClientId] = useState(null);
@@ -60,7 +62,7 @@ export default function AdAgencyTool() {
 
 
   // Cards State
-  const [cards, setCards] = useState([
+  const [campaigns, setCampaigns] = useState([
     {
       id: 1,
       clientId: 1,
@@ -164,9 +166,9 @@ export default function AdAgencyTool() {
     },
   ]);
 
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedCampaign, setSelectedCampaign] = useState(null);
 
-  const filteredCards = cards.filter(card => {
+  const filteredCards = campaigns.filter(card => {
     const matchesSearch = card.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPriority = filterPriority === 'all' || card.priority === filterPriority;
     return matchesSearch && matchesPriority;
@@ -197,23 +199,23 @@ export default function AdAgencyTool() {
   };
 
 
-  const updateCard = (cardId, updates) => {
-    setCards(cards.map(c => c.id === cardId ? { ...c, ...updates } : c));
-    setEditingCardId(null);
+  const updateCampaign = (cardId, updates) => {
+    setCampaigns(campaigns.map(c => c.id === cardId ? { ...c, ...updates } : c));
+    setEditingCampaignId(null);
   };
 
-  const deleteCard = (cardId) => {
-    setCards(cards.filter(c => c.id !== cardId));
-    setSelectedCard(null);
+  const deleteCampaign = (cardId) => {
+    setCampaigns(campaigns.filter(c => c.id !== cardId));
+    setSelectedCampaign(null);
   };
 
-  const duplicateCard = (card) => {
+  const duplicateCampaign = (card) => {
     const newCard = {
       ...card,
-      id: Math.max(...cards.map(c => c.id), 0) + 1,
+      id: Math.max(...campaigns.map(c => c.id), 0) + 1,
       title: card.title + ' (Copy)'
     };
-    setCards([...cards, newCard]);
+    setCampaigns([...campaigns, newCard]);
   };
 
   const addTeamMember = () => {
@@ -256,7 +258,7 @@ export default function AdAgencyTool() {
       .filter(Boolean);
 
     const card = {
-      id: Math.max(...cards.map(c => c.id), 0) + 1,
+      id: Math.max(...campaigns.map(c => c.id), 0) + 1,
       clientId: newWorkClientId,
       columnId: 'todo',
       title: newWork.title.trim(),
@@ -272,69 +274,21 @@ export default function AdAgencyTool() {
       activity: []
     };
 
-    setCards([...cards, card]);
+    setCampaigns([...campaigns, card]);
     closeNewWorkForm();
   };
 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900 to-slate-950">
-      {/* Header */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-black/20 border-b border-purple-500/20">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-black bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Ad Agency Tool v3
-              </h1>
-              <p className="text-purple-300/70 text-sm mt-1">Client and team work management</p>
-            </div>
-            <div className="flex gap-2">
-              {['clients', 'team'].map(v => (
-                <button
-                  key={v}
-                  onClick={() => setView(v)}
-                  className={`px-4 py-2 rounded-lg transition-all flex items-center gap-2 ${view === v
-                    ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/50'
-                    : 'text-purple-300 hover:bg-purple-900/50'
-                    }`}
-                >
-                  {v === 'clients' ? <Grid3x3 size={20} /> : <Users size={20} />}
-                  <span className="capitalize">{v}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {(
-            <>
-              {/* Search & Filter */}
-              <div className="flex gap-3">
-                <div className="flex-1 relative">
-                  <Search size={18} className="absolute left-3 top-3 text-purple-400/50" />
-                  <input
-                    type="text"
-                    placeholder="Search tasks..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white placeholder-purple-400/50 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/20"
-                  />
-                </div>
-                <select
-                  value={filterPriority}
-                  onChange={(e) => setFilterPriority(e.target.value)}
-                  className="px-4 py-2 bg-slate-900/50 border border-purple-500/20 rounded-lg text-white focus:outline-none focus:border-purple-500/50 text-sm"
-                >
-                  <option value="all">All Priorities</option>
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+   <Header
+  view={view}
+  setView={setView}
+  searchTerm={searchTerm}
+  setSearchTerm={setSearchTerm}
+  filterPriority={filterPriority}
+  setFilterPriority={setFilterPriority}
+/>
 
       {/* Main Content */}
       <div className="p-6">
@@ -353,7 +307,7 @@ export default function AdAgencyTool() {
                     {clientCards.map(card => (
                       <div
                         key={card.id}
-                        onClick={() => setSelectedCard(card)}
+                        onClick={() => setSelectedCampaign(card)}
                         className="group cursor-pointer bg-gradient-to-br from-slate-700/50 to-slate-800/50 rounded-lg overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all"
                       >
                         <div className="p-3 space-y-2">
@@ -469,7 +423,7 @@ export default function AdAgencyTool() {
                       {memberCards.map(card => {
                         const client = clients.find(c => c.id === card.clientId);
                         return (
-                          <div key={card.id} onClick={() => setSelectedCard(card)}
+                          <div key={card.id} onClick={() => setSelectedCampaign(card)}
                             className="cursor-pointer bg-slate-700/40 hover:bg-slate-700/60 border border-purple-500/20 rounded-lg p-3 transition-all">
                             <div className="flex gap-2 items-start">
                               <span className="text-xl">{card.imageUrl}</span>
@@ -627,29 +581,29 @@ export default function AdAgencyTool() {
       )}
 
       {/* Card Detail Modal */}
-      {selectedCard && !editingCardId && (
+      {selectedCampaign && !editingCampaignId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl max-w-3xl w-full max-h-96 overflow-y-auto border border-purple-500/30">
             <div className="sticky top-0 bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 border-b border-purple-500/20 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-3xl">{selectedCard.imageUrl}</span>
-                <h2 className="text-xl font-bold text-white">{selectedCard.title}</h2>
+                <span className="text-3xl">{selectedCampaign.imageUrl}</span>
+                <h2 className="text-xl font-bold text-white">{selectedCampaign.title}</h2>
               </div>
               <div className="flex gap-2">
                 <button
-                  onClick={() => setEditingCardId(selectedCard.id)}
+                  onClick={() => setEditingCampaignId(selectedCampaign.id)}
                   className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors text-purple-400"
                 >
                   <Edit2 size={20} />
                 </button>
                 <button
-                  onClick={() => duplicateCard(selectedCard)}
+                  onClick={() => duplicateCampaign(selectedCampaign)}
                   className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors text-slate-400"
                 >
                   <Copy size={20} />
                 </button>
                 <button
-                  onClick={() => setSelectedCard(null)}
+                  onClick={() => setSelectedCampaign(null)}
                   className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors"
                 >
                   <X className="text-slate-400" size={20} />
@@ -660,40 +614,40 @@ export default function AdAgencyTool() {
             <div className="px-6 py-4 space-y-4">
               <div>
                 <h4 className="text-sm font-bold text-purple-300 mb-2">Description</h4>
-                <p className="text-slate-300 text-sm">{selectedCard.description}</p>
+                <p className="text-slate-300 text-sm">{selectedCampaign.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Client</h4>
-                  <p className="text-white font-medium">{clients.find(c => c.id === selectedCard.clientId)?.name || 'Unassigned'}</p>
+                  <p className="text-white font-medium">{clients.find(c => c.id === selectedCampaign.clientId)?.name || 'Unassigned'}</p>
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Assignee</h4>
-                  <p className="text-white font-medium">{selectedCard.assignee}</p>
+                  <p className="text-white font-medium">{selectedCampaign.assignee}</p>
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Due Date</h4>
-                  <p className={`font-medium ${isOverdue(selectedCard.dueDate) ? 'text-red-400' : 'text-slate-300'}`}>
-                    {formatDate(selectedCard.dueDate)}
+                  <p className={`font-medium ${isOverdue(selectedCampaign.dueDate) ? 'text-red-400' : 'text-slate-300'}`}>
+                    {formatDate(selectedCampaign.dueDate)}
                   </p>
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Priority</h4>
-                  <span className={`inline-block px-2 py-1 rounded text-xs font-bold border ${getPriorityColor(selectedCard.priority)}`}>
-                    {selectedCard.priority}
+                  <span className={`inline-block px-2 py-1 rounded text-xs font-bold border ${getPriorityColor(selectedCampaign.priority)}`}>
+                    {selectedCampaign.priority}
                   </span>
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Progress</h4>
-                  <p className="text-white font-medium">{selectedCard.checklist.completed}/{selectedCard.checklist.total}</p>
+                  <p className="text-white font-medium">{selectedCampaign.checklist.completed}/{selectedCampaign.checklist.total}</p>
                 </div>
               </div>
 
               <div>
                 <h4 className="text-sm font-bold text-purple-300 mb-2">Labels</h4>
                 <div className="flex gap-2 flex-wrap">
-                  {selectedCard.labels.map(label => (
+                  {selectedCampaign.labels.map(label => (
                     <span key={label} className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-medium">
                       {label}
                     </span>
@@ -704,22 +658,22 @@ export default function AdAgencyTool() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center gap-2 text-slate-400">
                   <MessageSquare size={16} className="text-blue-400" />
-                  {selectedCard.comments} Comments
+                  {selectedCampaign.comments} Comments
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
                   <Paperclip size={16} className="text-green-400" />
-                  {selectedCard.attachments} Attachments
+                  {selectedCampaign.attachments} Attachments
                 </div>
               </div>
 
               <div className="flex gap-2 pt-4 border-t border-slate-700/50">
-                <button onClick={() => setEditingCardId(selectedCard.id)} className="flex-1 px-3 py-2 bg-purple-600/50 hover:bg-purple-600 text-purple-100 rounded-lg font-medium text-sm transition-colors">
+                <button onClick={() => setEditingCampaignId(selectedCampaign.id)} className="flex-1 px-3 py-2 bg-purple-600/50 hover:bg-purple-600 text-purple-100 rounded-lg font-medium text-sm transition-colors">
                   <Edit2 size={14} className="inline mr-2" /> Edit Card
                 </button>
                 <button className="flex-1 px-3 py-2 bg-slate-700/50 hover:bg-slate-700 text-slate-300 rounded-lg font-medium text-sm transition-colors">
                   <Archive size={14} className="inline mr-2" /> Archive
                 </button>
-                <button onClick={() => { deleteCard(selectedCard.id); setSelectedCard(null); }} className="flex-1 px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-lg font-medium text-sm transition-colors">
+                <button onClick={() => { deleteCampaign(selectedCampaign.id); setSelectedCampaign(null); }} className="flex-1 px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-300 rounded-lg font-medium text-sm transition-colors">
                   <Trash2 size={14} className="inline mr-2" /> Delete
                 </button>
               </div>
@@ -729,13 +683,13 @@ export default function AdAgencyTool() {
       )}
 
       {/* Card Edit Modal */}
-      {editingCardId && (
+      {editingCampaignId && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl max-w-2xl w-full max-h-screen overflow-y-auto border border-purple-500/30">
             <div className="sticky top-0 bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 border-b border-purple-500/20 flex items-center justify-between">
               <h2 className="text-xl font-bold text-white">Edit Card</h2>
               <button
-                onClick={() => setEditingCardId(null)}
+                onClick={() => setEditingCampaignId(null)}
                 className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors"
               >
                 <X className="text-slate-400" size={20} />
@@ -749,8 +703,8 @@ export default function AdAgencyTool() {
                 </label>
                 <input
                   type="text"
-                  defaultValue={selectedCard.title}
-                  onChange={(e) => setSelectedCard({ ...selectedCard, title: e.target.value })}
+                  defaultValue={selectedCampaign.title}
+                  onChange={(e) => setSelectedCampaign({ ...selectedCampaign, title: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
                 />
               </div>
@@ -762,13 +716,13 @@ export default function AdAgencyTool() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    defaultValue={selectedCard.imageUrl}
-                    onChange={(e) => setSelectedCard({ ...selectedCard, imageUrl: e.target.value })}
+                    defaultValue={selectedCampaign.imageUrl}
+                    onChange={(e) => setSelectedCampaign({ ...selectedCampaign, imageUrl: e.target.value })}
                     maxLength="2"
                     className="flex-1 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-2xl text-center placeholder-slate-400 focus:outline-none focus:border-purple-500"
                     placeholder="🎨"
                   />
-                  <div className="text-4xl">{selectedCard.imageUrl}</div>
+                  <div className="text-4xl">{selectedCampaign.imageUrl}</div>
                 </div>
                 <p className="text-xs text-slate-400 mt-2">Enter emoji or single character</p>
               </div>
@@ -778,8 +732,8 @@ export default function AdAgencyTool() {
                   <AlignLeft size={16} /> Description
                 </label>
                 <textarea
-                  defaultValue={selectedCard.description}
-                  onChange={(e) => setSelectedCard({ ...selectedCard, description: e.target.value })}
+                  defaultValue={selectedCampaign.description}
+                  onChange={(e) => setSelectedCampaign({ ...selectedCampaign, description: e.target.value })}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 resize-none"
                   rows="3"
                 />
@@ -789,8 +743,8 @@ export default function AdAgencyTool() {
                 <div>
                   <label className="block text-sm font-bold text-purple-300 mb-2">Client</label>
                   <select
-                    value={selectedCard.clientId}
-                    onChange={(e) => setSelectedCard({ ...selectedCard, clientId: Number(e.target.value) })}
+                    value={selectedCampaign.clientId}
+                    onChange={(e) => setSelectedCampaign({ ...selectedCampaign, clientId: Number(e.target.value) })}
                     className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                   >
                     {clients.map(client => (
@@ -801,8 +755,8 @@ export default function AdAgencyTool() {
                 <div>
                   <label className="block text-sm font-bold text-purple-300 mb-2">Assignee</label>
                   <select
-                    defaultValue={selectedCard.assignee}
-                    onChange={(e) => setSelectedCard({ ...selectedCard, assignee: e.target.value })}
+                    defaultValue={selectedCampaign.assignee}
+                    onChange={(e) => setSelectedCampaign({ ...selectedCampaign, assignee: e.target.value })}
                     className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                   >
                     {teams.map(team => (
@@ -814,8 +768,8 @@ export default function AdAgencyTool() {
                 <div>
                   <label className="block text-sm font-bold text-purple-300 mb-2">Priority</label>
                   <select
-                    defaultValue={selectedCard.priority}
-                    onChange={(e) => setSelectedCard({ ...selectedCard, priority: e.target.value })}
+                    defaultValue={selectedCampaign.priority}
+                    onChange={(e) => setSelectedCampaign({ ...selectedCampaign, priority: e.target.value })}
                     className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                   >
                     <option value="low">Low</option>
@@ -828,8 +782,8 @@ export default function AdAgencyTool() {
                   <label className="block text-sm font-bold text-purple-300 mb-2">Due Date</label>
                   <input
                     type="date"
-                    defaultValue={selectedCard.dueDate}
-                    onChange={(e) => setSelectedCard({ ...selectedCard, dueDate: e.target.value })}
+                    defaultValue={selectedCampaign.dueDate}
+                    onChange={(e) => setSelectedCampaign({ ...selectedCampaign, dueDate: e.target.value })}
                     className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                   />
                 </div>
@@ -843,8 +797,8 @@ export default function AdAgencyTool() {
                 </label>
                 <input
                   type="text"
-                  defaultValue={selectedCard.labels.join(', ')}
-                  onChange={(e) => setSelectedCard({ ...selectedCard, labels: e.target.value.split(',').map(l => l.trim()) })}
+                  defaultValue={selectedCampaign.labels.join(', ')}
+                  onChange={(e) => setSelectedCampaign({ ...selectedCampaign, labels: e.target.value.split(',').map(l => l.trim()) })}
                   placeholder="design, urgent, social"
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-purple-500"
                 />
@@ -859,8 +813,8 @@ export default function AdAgencyTool() {
                     <input
                       type="number"
                       min="0"
-                      defaultValue={selectedCard.checklist.completed}
-                      onChange={(e) => setSelectedCard({ ...selectedCard, checklist: { ...selectedCard.checklist, completed: parseInt(e.target.value) } })}
+                      defaultValue={selectedCampaign.checklist.completed}
+                      onChange={(e) => setSelectedCampaign({ ...selectedCampaign, checklist: { ...selectedCampaign.checklist, completed: parseInt(e.target.value) } })}
                       className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                     />
                   </div>
@@ -869,8 +823,8 @@ export default function AdAgencyTool() {
                     <input
                       type="number"
                       min="0"
-                      defaultValue={selectedCard.checklist.total}
-                      onChange={(e) => setSelectedCard({ ...selectedCard, checklist: { ...selectedCard.checklist, total: parseInt(e.target.value) } })}
+                      defaultValue={selectedCampaign.checklist.total}
+                      onChange={(e) => setSelectedCampaign({ ...selectedCampaign, checklist: { ...selectedCampaign.checklist, total: parseInt(e.target.value) } })}
                       className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
                     />
                   </div>
@@ -880,15 +834,15 @@ export default function AdAgencyTool() {
               <div className="flex gap-2 pt-4 border-t border-slate-700/50">
                 <button
                   onClick={() => {
-                    updateCard(selectedCard.id, selectedCard);
-                    setSelectedCard(null);
+                    updateCampaign(selectedCampaign.id, selectedCampaign);
+                    setSelectedCampaign(null);
                   }}
                   className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                 >
                   <Save size={16} /> Save Changes
                 </button>
                 <button
-                  onClick={() => setEditingCardId(null)}
+                  onClick={() => setEditingCampaignId(null)}
                   className="flex-1 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
                 >
                   Cancel
