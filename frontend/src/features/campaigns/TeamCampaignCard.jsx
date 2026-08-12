@@ -3,7 +3,7 @@ function TeamCampaignCard({
   client,
   onClick,
   getPriorityColor,
-  formatDate,
+  formatRelativeDate,
 }) {
   return (
   <div
@@ -34,7 +34,7 @@ function TeamCampaignCard({
       </span>
 
       <span className="px-2 py-1 rounded bg-slate-600/30 text-slate-400 text-xs">
-        {formatDate(card.dueDate)}
+        {formatRelativeDate(card.dueDate)}
       </span>
     </div>
   </div>
