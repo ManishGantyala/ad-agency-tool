@@ -7,23 +7,3 @@ export const getPriorityColor = (priority) => {
 
   return colors[priority] || colors.low;
 };
-
-export const isOverdue = (dueDate) => {
-  return new Date(dueDate) < new Date();
-};
-
-export const formatDate = (dateStr) => {
-  const date = new Date(dateStr);
-  const today = new Date();
-  const tomorrow = new Date(today);
-
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  if (date.toDateString() === today.toDateString()) return 'Today';
-  if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
-
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric'
-  });
-};

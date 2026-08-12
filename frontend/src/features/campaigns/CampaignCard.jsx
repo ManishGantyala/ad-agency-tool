@@ -3,7 +3,7 @@ function CampaignCard({
   onClick,
   getPriorityColor,
   isOverdue,
-  formatDate,
+  formatRelativeDate,
 }) {
   return (
   <div
@@ -41,7 +41,7 @@ function CampaignCard({
               : "bg-slate-600/30 text-slate-400"
           }`}
         >
-          {formatDate(card.dueDate)}
+          {formatRelativeDate(card.dueDate)}
         </span>
       </div>
 

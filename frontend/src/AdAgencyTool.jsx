@@ -11,11 +11,11 @@ import {
   initialCampaigns,
 } from "./features/campaigns/campaignData";
 import { initialTeams } from "./features/teams/teamData";
+import { getPriorityColor } from "./utils/campaignUtils";
 import {
-  getPriorityColor,
   isOverdue,
-  formatDate,
-} from "./utils/campaignUtils";
+  formatRelativeDate,
+} from "./lib/utils";
 
 export default function AdAgencyTool() {
   const [view, setView] = useState('clients'); // clients, team
@@ -164,7 +164,7 @@ export default function AdAgencyTool() {
                         onClick={() => setSelectedCampaign(card)}
                         getPriorityColor={getPriorityColor}
                         isOverdue={isOverdue}
-                        formatDate={formatDate}
+                        formatRelativeDate={formatRelativeDate}
                       />
                     ))}
                     {clientCards.length === 0 && (
@@ -262,7 +262,7 @@ export default function AdAgencyTool() {
                           client={client}
                           onClick={() => setSelectedCampaign(card)}
                           getPriorityColor={getPriorityColor}
-                          formatDate={formatDate}
+                          formatRelativeDate={formatRelativeDate}
                         />
   );
 })}
@@ -457,7 +457,7 @@ export default function AdAgencyTool() {
                 <div>
                   <h4 className="text-xs font-bold text-purple-300 mb-1">Due Date</h4>
                   <p className={`font-medium ${isOverdue(selectedCampaign.dueDate) ? 'text-red-400' : 'text-slate-300'}`}>
-                    {formatDate(selectedCampaign.dueDate)}
+                    {formatRelativeDate(selectedCampaign.dueDate)}
                   </p>
                 </div>
                 <div>
