@@ -5,6 +5,8 @@ import {
   Trash2, Plus, X, MessageSquare, Paperclip, Clock, Search, Users,
   Grid3x3, Copy, Archive, Edit2, Type, ImageIcon, AlignLeft, Tag, Save
 } from 'lucide-react';
+import CampaignCard from "./features/campaigns/CampaignCard";
+import TeamCampaignCard from "./features/campaigns/TeamCampaignCard";
 
 export default function AdAgencyTool() {
   const [view, setView] = useState('clients'); // clients, team
@@ -281,14 +283,14 @@ export default function AdAgencyTool() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900 to-slate-950">
-   <Header
-  view={view}
-  setView={setView}
-  searchTerm={searchTerm}
-  setSearchTerm={setSearchTerm}
-  filterPriority={filterPriority}
-  setFilterPriority={setFilterPriority}
-/>
+      <Header
+        view={view}
+        setView={setView}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        filterPriority={filterPriority}
+        setFilterPriority={setFilterPriority}
+      />
 
       {/* Main Content */}
       <div className="p-6">
@@ -305,34 +307,14 @@ export default function AdAgencyTool() {
                   </div>
                   <div className="flex-1 bg-slate-800/30 border border-slate-700/50 rounded-b-xl p-3 min-h-96 space-y-3">
                     {clientCards.map(card => (
-                      <div
+                      <CampaignCard
                         key={card.id}
+                        card={card}
                         onClick={() => setSelectedCampaign(card)}
-                        className="group cursor-pointer bg-gradient-to-br from-slate-700/50 to-slate-800/50 rounded-lg overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all"
-                      >
-                        <div className="p-3 space-y-2">
-                          <div className="flex items-start gap-2">
-                            <span className="text-2xl">{card.imageUrl}</span>
-                            <div className="min-w-0">
-                              <h3 className="font-bold text-white text-sm">{card.title}</h3>
-                              <p className="text-xs text-purple-300 mt-1">Assigned to: {card.assignee}</p>
-                            </div>
-                          </div>
-                          <div className="flex gap-2 flex-wrap">
-                            <span className={`px-2 py-1 rounded border text-xs font-medium ${getPriorityColor(card.priority)}`}>{card.priority}</span>
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${isOverdue(card.dueDate) ? 'bg-red-500/20 text-red-400' : 'bg-slate-600/30 text-slate-400'}`}>
-                              <Clock size={10} className="inline mr-1" />{formatDate(card.dueDate)}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-full bg-slate-600/30 rounded-full h-1">
-                              <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full"
-                                style={{ width: `${card.checklist.total ? (card.checklist.completed / card.checklist.total) * 100 : 0}%` }} />
-                            </div>
-                            <span className="text-slate-400 text-xs">{card.checklist.completed}/{card.checklist.total}</span>
-                          </div>
-                        </div>
-                      </div>
+                        getPriorityColor={getPriorityColor}
+                        isOverdue={isOverdue}
+                        formatDate={formatDate}
+                      />
                     ))}
                     {clientCards.length === 0 && (
                       <div className="flex items-center justify-center h-24 text-slate-500 text-sm">No work assigned</div>
@@ -422,23 +404,18 @@ export default function AdAgencyTool() {
                     <div className="p-3 space-y-3 min-h-64">
                       {memberCards.map(card => {
                         const client = clients.find(c => c.id === card.clientId);
-                        return (
-                          <div key={card.id} onClick={() => setSelectedCampaign(card)}
-                            className="cursor-pointer bg-slate-700/40 hover:bg-slate-700/60 border border-purple-500/20 rounded-lg p-3 transition-all">
-                            <div className="flex gap-2 items-start">
-                              <span className="text-xl">{card.imageUrl}</span>
-                              <div className="min-w-0 flex-1">
-                                <h4 className="font-bold text-white text-sm">{card.title}</h4>
-                                <p className="text-xs text-purple-300 mt-1">Client: {client?.name || 'Unassigned'}</p>
-                              </div>
-                            </div>
-                            <div className="flex gap-2 mt-3">
-                              <span className={`px-2 py-1 rounded border text-xs ${getPriorityColor(card.priority)}`}>{card.priority}</span>
-                              <span className="px-2 py-1 rounded bg-slate-600/30 text-slate-400 text-xs">{formatDate(card.dueDate)}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
+                         return (
+                          <TeamCampaignCard
+                          key={card.id}
+                          card={card}
+                          client={client}
+                          onClick={() => setSelectedCampaign(card)}
+                          getPriorityColor={getPriorityColor}
+                          formatDate={formatDate}
+                        />
+  );
+})}
+
                       {memberCards.length === 0 && <div className="text-center text-slate-500 text-sm py-8">No assigned work</div>}
                     </div>
                   </div>
